@@ -14,6 +14,7 @@ export default new Vuex.Store({
     loading: false,
 
     headFile: [],
+    headObj: {},
     dataFile: [],
 
   },
@@ -47,9 +48,11 @@ export default new Vuex.Store({
           * 
           */ 
 
-          const headObj = {
+  
+          state.headObj = {
             num_timbre: headFile[0][1],
             date_valid_until: headFile[0][3],
+            date_initial_validity: headFile[0][6],
             num_doc: headFile[0][13],
           } 
 
@@ -95,6 +98,7 @@ export default new Vuex.Store({
              
             }
           }
+
 
            
           /**
@@ -153,19 +157,44 @@ export default new Vuex.Store({
               description: item.description,
               part_number: item.part_number,
               quanty: item.quanty,
-              unit_value: item.unit_value,
+              unit_value: item.total_value / item.quanty,
               total_value: item.total_value,
             }
           })
 
 
-          console.log("la cabecera es: ",headObj)
+          //console.log("la cabecera es: ",state.headObj)
 
 
-          console.log("El resultado es: ",dataFile)
+          //console.log("El resultado es: ",dataFile)
+
+          /*********************************************************** */
+          /**
+           * 
+           * GRUOP BY part_number and sum total_value
+           * 
+           */
+          const groupPartNumber = dataFile.reduce((r, a) => {
+            r[a.part_number] = [...r[a.part_number] || [], a];
+
+            // sum total_value
+            r[a.part_number].total_value = r[a.part_number].reduce((a, b) => {
+              return parseInt(a) + parseInt(b.total_value)
+            }, 0)
+            
+
+            return r;
+          }, {});
+
+    
+
+            console.log("El resultado agrupado: ",groupPartNumber)
 
 
-          console.log("El total es: ",total)
+
+
+
+         // console.log("El total es: ",total)
 
          /*  const data = {
             headFile: headFile,
