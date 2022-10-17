@@ -281,7 +281,7 @@ export default new Vuex.Store({
           }
 
 
-          console.log("El resultado es sumTotalValue: ", state.definitiveData) 
+          //console.log("El resultado es sumTotalValue: ", state.definitiveData) 
 
 
            

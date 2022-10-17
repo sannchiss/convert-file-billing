@@ -1,451 +1,16 @@
 <template>
 <v-container>
 
-    <div>
-        <vue-html2pdf :show-layout="false" :margin="20" :float-layout="true" :enable-download="false" :preview-modal="true" :paginate-elements-by-height="1400" filename="hee hee" :pdf-quality="2" :manual-pagination="true" pdf-format="letter" pdf-orientation="portrait" pdf-content-width="800px" @progress="onProgress($event)" @hasStartedGeneration="hasStartedGeneration()" @hasGenerated="hasGenerated($event)" @startPagination="beginPrint()" @beforeDownload="beforeDownload($event)" ref="html2Pdf">
-            <section slot="pdf-content">
-
-                <section class="pdf-item">
-                    <contentToPrint />
-
-                    <v-row>
-                        <div style="margin:-80px 30px">
-
-                            <div id="label">
-                                <span class="font_bold_m">Intl Air Waybill</span>
-                                <div id="label_cont">
-                                    <span class="font_normal">Intl Air Waybill</span>
-                                </div>
-                            </div>
-
-                        </div>
-
-                        <div style="margin:-80px 110px">
-
-                            <div id="label">
-                                <span class="font_bold_m">Bill D/T/F</span>
-                                <div id="label_cont">
-                                    <span class="font_normal">431591944</span>
-                                </div>
-                            </div>
-
-                        </div>
-                        <div style="margin:-80px 50px">
-
-                            <div id="label">
-                                <span class="font_bold_m">Currency</span>
-                                <div id="label_cont">
-                                    <span class="font_normal">USD</span>
-                                </div>
-                            </div>
-
-                        </div>
-
-                        <div style="margin:-80px 70px">
-
-                            <div id="label">
-                                <span class="font_bold_m">Customer References</span>
-                                <div id="label_cont">
-                                    <span class="font_normal">-</span>
-                                </div>
-                            </div>
-
-                        </div>
-
-                    </v-row>
-
-                    <v-row>
-
-                        <div style="margin: -20px 30px">
-
-                            <div id="label">
-                                <span class="font_bold_m">Terms of Sale</span>
-                                <div id="label_cont">
-                                    <span class="font_normal">FCA</span>
-                                </div>
-                            </div>
-
-                        </div>
-
-                        <div style="margin: -20px 110px">
-
-                            <div id="label">
-                                <span class="font_bold_m">Total Wgt</span>
-                                <div id="label_cont">
-                                    <span class="font_normal">12.50</span>
-                                </div>
-                            </div>
-
-                        </div>
-
-                        <div style="margin: -20px 50px">
-
-                            <div id="label">
-                                <span class="font_bold_m">Wgt Type</span>
-                                <div id="label_cont">
-                                    <span class="font_normal">KG</span>
-                                </div>
-                            </div>
-
-                        </div>
-
-                        <div style="margin: -20px 70px">
-
-                            <div id="label">
-                                <span class="font_bold_m">Total Packages</span>
-                                <div id="label_cont">
-                                    <span class="font_normal">2</span>
-                                </div>
-                            </div>
-
-                        </div>
-
-                    </v-row>
-
-                    <v-row>
-
-                        <!--Exporter/Shipper-->
-                        <div style="margin: 20px 30px">
-
-                            <div id="label">
-                                <span class="font_bold_m">Exporter/Shipper</span>
-                                <div id="label_cont">
-                                    <span class="font_min_normal">Contact:</span>&nbsp;&nbsp;&nbsp;<span class="font_normal">CUSTOMER SERVICE</span>
-                                </div>
-                                <div id="label_cont">
-                                    <span class="font_min_normal">Co Name:</span>&nbsp;<span class="font_normal">STEMS AND BUNCHES</span>
-                                </div>
-                                <div id="label_cont">
-                                    <span class="font_min_normal">Address1:</span>&nbsp;<span class="font_normal">KALOS S.A</span>
-                                </div>
-                                <div id="label_cont">
-                                    <span class="font_min_normal">Address2:</span>&nbsp;<span class="font_normal">BAF - IPD</span>
-                                </div>
-                                <div id="label_cont">
-                                    <span class="font_min_normal">City:</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="font_normal">PARAGUAY</span>
-                                </div>
-                                <div id="label_cont">
-                                    <span class="font_min_normal">St/PV:</span><span class="font_normal">-</span>
-                                </div>
-                                <div id="label_cont">
-                                    <span class="font_min_normal">Phone:</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="font_normal">021 751-596</span>
-                                </div>
-                            </div>
-
-                        </div>
-
-                        <div style="margin: 130px 110px">
-                            <div id="label_cont">
-                                <span class="font_min_normal">Country/Territory:</span>&nbsp;<span class="font_normal">PY</span>
-                            </div>
-                        </div>
-
-                        <div style="margin: 130px -60px">
-                            <div id="label_cont">
-                                <span class="font_min_normal">Postal:</span>&nbsp;<span class="font_normal">999998</span>
-                            </div>
-                        </div>
-
-                        <!--Ship To (Consignee)-->
-                        <div style="margin: 20px 100px">
-
-                            <div id="label">
-                                <span class="font_bold_m">Exporter/Shipper</span>
-                                <div id="label_cont">
-                                    <span class="font_min_normal">Contact:</span>&nbsp;&nbsp;&nbsp;<span class="font_normal">via FedEx IPD</span>
-                                </div>
-                                <div id="label_cont">
-                                    <span class="font_min_normal">Co Name:</span>&nbsp;<span class="font_normal">FEDEX EXPRESS</span>
-                                </div>
-                                <div id="label_cont">
-                                    <span class="font_min_normal">Address1:</span>&nbsp;<span class="font_normal">6100 NW 36 Street</span>
-                                </div>
-                                <div id="label_cont">
-                                    <span class="font_min_normal">Address2:</span>&nbsp;<span class="font_normal">Building 831</span>
-                                </div>
-                                <div id="label_cont">
-                                    <span class="font_min_normal">City:</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="font_normal">Miami</span>
-                                </div>
-                                <div id="label_cont">
-                                    <span class="font_min_normal">St/PV:</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="font_normal">FL</span>
-                                </div>
-                                <div id="label_cont">
-                                    <span class="font_min_normal">Phone:</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="font_normal">1-866-638-2482</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div style="margin: -148px 0px 10px 525px">
-                            <div id="label_cont">
-                                <span class="font_min_normal">Country/Territory:</span>&nbsp;<span class="font_normal">US</span>
-                            </div>
-                        </div>
-
-                        <div style="margin: -148px 0px 100px 650px">
-                            <div id="label_cont">
-                                <span class="font_min_normal">Postal:</span>&nbsp;<span class="font_normal">33115</span>
-                            </div>
-                        </div>
-
-                    </v-row>
-
-                    <v-row>
-
-                        <!--Broker-->
-                        <div style="margin: -100px 30px">
-
-                            <div id="label">
-                                <span class="font_bold_m">Broker</span>
-                                <div id="label_cont">
-                                    <span class="font_min_normal">Contact:</span>&nbsp;&nbsp;&nbsp;<span class="font_normal"></span>
-                                </div>
-                                <div id="label_cont">
-                                    <span class="font_min_normal">Co Name:</span>&nbsp;<span class="font_normal"></span>
-                                </div>
-                                <div id="label_cont">
-                                    <span class="font_min_normal">Address1:</span>&nbsp;<span class="font_normal"></span>
-                                </div>
-                                <div id="label_cont">
-                                    <span class="font_min_normal">Address2:</span>&nbsp;<span class="font_normal"></span>
-                                </div>
-                                <div id="label_cont">
-                                    <span class="font_min_normal">City:</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="font_normal"></span>
-                                </div>
-                                <div id="label_cont">
-                                    <span class="font_min_normal">St/PV:</span><span class="font_normal">-</span>
-                                </div>
-                                <div id="label_cont">
-                                    <span class="font_min_normal">Phone:</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="font_normal"></span>
-                                </div>
-                            </div>
-
-                        </div>
-
-                        <div style="margin: 10px 30px 100px 110px">
-                            <div id="label_cont">
-                                <span class="font_min_normal">Country/Territory:</span>&nbsp;<span class="font_normal"></span>
-                            </div>
-                        </div>
-
-                        <div style="margin: 10px 30px 100px 35px">
-                            <div id="label_cont">
-                                <span class="font_min_normal">Postal:</span>&nbsp;<span class="font_normal"></span>
-                            </div>
-                        </div>
-
-                        <!--Importer-->
-                        <div style="margin: -103px 30px 100px 45px">
-
-                            <div id="label">
-                                <span class="font_bold_m">Importer</span>
-                                <div id="label_cont">
-                                    <span class="font_min_normal">Contact:</span>&nbsp;&nbsp;&nbsp;<span class="font_normal">VIA IPD SERVICE</span>
-                                </div>
-                                <div id="label_cont">
-                                    <span class="font_min_normal">Co Name:</span>&nbsp;<span class="font_normal">FEDEX EXPRESS</span>
-                                </div>
-                                <div id="label_cont">
-                                    <span class="font_min_normal">Address1:</span>&nbsp;<span class="font_normal">6100 NW 36 Street</span>
-                                </div>
-                                <div id="label_cont">
-                                    <span class="font_min_normal">Address2:</span>&nbsp;<span class="font_normal">Building 831</span>
-                                </div>
-                                <div id="label_cont">
-                                    <span class="font_min_normal">City:</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="font_normal">Miami</span>
-                                </div>
-                                <div id="label_cont">
-                                    <span class="font_min_normal">St/PV:</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="font_normal">FL</span>
-                                </div>
-                                <div id="label_cont">
-                                    <span class="font_min_normal">Phone:</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="font_normal">1-866-638-2482</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div style="margin: -123px 0px 10px 525px">
-                            <div id="label_cont">
-                                <span class="font_min_normal">Country/Territory:</span>&nbsp;<span class="font_normal">US</span>
-                            </div>
-                        </div>
-
-                        <div style="margin: -123px 0px 100px 650px">
-                            <div id="label_cont">
-                                <span class="font_min_normal">Postal:</span>&nbsp;<span class="font_normal">33115</span>
-                            </div>
-                        </div>
-
-                    </v-row>
-
-                    <div style="margin: -50px 20px 10px 30px ">
-
-                        <v-simple-table class="table-items-billing">
-                            <template v-slot:default>
-                                <thead class="thead">
-                                    <tr>
-                                        <th>Marks & No.</th>
-                                        <th>PartNumber</th>
-                                        <th>HS Code/Description of Goods</th>
-                                        <th>Origin of Mfg</th>
-                                        <th>Unit of Measure</th>
-                                        <th>Qty</th>
-                                        <th>Unit Value</th>
-                                        <th>Total Value</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <template v-for="doc in $store.state.definitiveData" ref="">
-
-                                        <tr v-for="(detail, index) in doc.group" :key="index">
-
-                                            <td>-</td>
-                                            <td>-</td>
-                                            <td>{{ detail.description }}</td>
-                                            <td>PY</td>
-                                            <td>EA</td>
-                                            <td>{{detail.quanty}}</td>
-                                            <td>{{detail.unit_value}}</td>
-                                            <td>{{detail.total_value}}</td>
-
-                                        </tr>
-
-                                        <tr>
-                                            <td colspan="3">Subtotal {{doc.group[0].part_number}} COO: PY</td>
-                                            <td>-</td>
-                                            <td>-</td>
-                                            <td>{{ (doc.total_value/doc.group[0].unit_value)}}</td>
-                                            <td>-</td>
-                                            <td>{{doc.total_value}}</td>
-                                        </tr>
-
-                                    </template>
-                                </tbody>
-                                
-                            </template>
-                        </v-simple-table>
-                        <!--            
-             <table class="table table-bordered table-items-billing">
-                <thead>
-                    <tr>
-                        <th >Marks & No.</th>
-                        <th>PartNumber</th>
-                        <th>HS Code/Description of Goods</th>
-                        <th>Origin of Mfg</th>
-                        <th>Unit of Measure</th>
-                        <th>Qty</th>
-                        <th>Unit Value</th>
-                        <th>Total Value</th>
-                    </tr>                
-                </thead>
-                <tbody>
-                    <tr v-for="item in $store.state.definitiveData" :key="item.name">
-
-                        <td v-for="detail in item.group" :key="detail.name">
-
-                            <tr>{{detail.description}}</tr>
-
-                        </td>
-
-                        <td>ds</td>
-
-                </tr>
-                </tbody>
-            </table>  -->
-
-                    </div>
-
-                </section>
-
-                <!--
-            After this element below, the page will break and any elements after
-            <div class="html2pdf__page-break"/> will go to the next page.
-        -->
-                <div class="html2pdf__page-break" />
-
-                <section class="pdf-item">
-                    <h4>
-                        <contentToPrint />
-
-                    </h4>
-
-                    <!--  <span>
-                Value
-            </span> -->
-                </section>
-
-                <div class="html2pdf__page-break" />
-
-                <section class="pdf-item">
-                    <h4>
-                        Pagina 3
-                    </h4>
-
-                    <!-- <span>
-                Value
-            </span> -->
-                </section>
-
-            </section>
-        </vue-html2pdf>
-    </div>
-
     <v-row>
 
-        {{ $store.state.definitiveData[1] }}
 
-        <!--
-        <v-list>
+        <v-col md="12" pt-15>
 
-            <v-list-item-group>
+            <table id="my-table"><!-- ... --></table>
 
-                <v-list-item v-for="item in $store.state.definitiveData" :key="item.name">
+        </v-col>
 
-                    <v-list-item-content>
 
-                        <v-list-item-title>{{ item.group.description}}</v-list-item-title>
-
-                    </v-list-item-content>
-
-                </v-list-item>
-
-            </v-list-item-group>
-
-        </v-list>
-
-        <v-col cols="12" sm="6" md="4" v-for="item in $store.state.definitiveData" :key="item.name">
-
-            <v-list v-for="art in item.group" :key="art.name">
-
-                <v-list-item-group>
-
-                    <v-list-item>
-
-                        <v-list-item-content>
-
-                            <v-list-item-title>{{ art.description}}</v-list-item-title>
-                            <v-list-item-subtitle>{{ art.part_number }}</v-list-item-subtitle>
-                            <v-list-item-subtitle>{{ art.quanty }}</v-list-item-subtitle>
-                            <v-list-item-subtitle>{{ art.unit_value }}</v-list-item-subtitle>
-                            <v-list-item-subtitle>{{ art.total_value }}</v-list-item-subtitle>
-
-                        </v-list-item-content>
-
-                    </v-list-item>
-
-                </v-list-item-group>
-
-            </v-list>
-
-            <v-list v-for="into in item" :key="into.id">
-                <v-list-item>
-                    <v-list-item-content>
-                        <v-list-item-title>{{into.total_value}}</v-list-item-title>
-                    </v-list-item-content>
-
-                </v-list-item>
-
-            </v-list>
-
-        </v-col>  -->
 
     </v-row>
 
@@ -499,34 +64,207 @@
 </template>
 
 <script>
-import pdfMake from "pdfmake/build/pdfmake"
-import pdfFonts from "pdfmake/build/vfs_fonts"
 
 import VueHtml2pdf from 'vue-html2pdf'
 
-pdfMake.vfs = pdfFonts.pdfMake.vfs
+import { jsPDF } from "jspdf";
+import autoTable from 'jspdf-autotable';
 
 export default {
 
     data: () => ({
-        title: 'Upload file .txt',
-        items: [{
+        title: 'Upload File',
+        i: 0,
 
-            }
+        array: [
+            { id: 1, name: 'John', age: 30, city: 'New York' },
+            { id: 2, name: 'Marry', age: 28, city: 'London' },
+            { id: 3, name: 'Peter', age: 32, city: 'Paris' },
+            { id: 4, name: 'John', age: 30, city: 'New York' },
+            { id: 5, name: 'Marry', age: 28, city: 'London' },
+            { id: 6, name: 'Peter', age: 32, city: 'Paris' },
+            { id: 7, name: 'John', age: 30, city: 'New York' },
+            { id: 8, name: 'Marry', age: 28, city: 'London' },
+            { id: 9, name: 'Peter', age: 32, city: 'Paris' },
+            { id: 10, name: 'John', age: 30, city: 'New York' },
+            { id: 11, name: 'Marry', age: 28, city: 'London' },
+            { id: 12, name: 'Peter', age: 32, city: 'Paris' },
+            { id: 13, name: 'John', age: 30, city: 'New York' },
+            { id: 14, name: 'Marry', age: 28, city: 'London' },
+            { id: 15, name: 'Peter', age: 32, city: 'Paris' },
+            { id: 16, name: 'John', age: 30, city: 'New York' },
+            { id: 17, name: 'Marry', age: 28, city: 'London' },
+            { id: 18, name: 'Peter', age: 32, city: 'Paris' },
+            { id: 19, name: 'John', age: 30, city: 'New York' },
+            { id: 20, name: 'Marry', age: 28, city: 'London' },
+            { id: 21, name: 'Peter', age: 32, city: 'Paris' },
+            
+            
+            
+        ],
 
-        ]
+        
 
     }),
     methods: {
+
+        testing() {
+            // call router
+            this.$router.push({ name: 'test' })
+        },
         onFileChange(file) {
-
             this.$store.commit('setFile', file)
-
         },
 
         generateReport() {
+         //  this.$refs.html2Pdf.generatePdf()
 
-            this.$refs.html2Pdf.generatePdf()
+        // Landscape export, 2×4 inches
+        const doc = new jsPDF({
+
+            pageFormat: 'a3',
+
+         });
+
+        doc.setFontSize(10);
+        doc.setFont("helvetica", "bold");
+        doc.text("FedEx IPD Consolidated Commercial Invoice", 45,15 );
+
+
+        doc.setFontSize(8);
+        doc.setFont("helvetica", "bold");
+        doc.text("Ship Date", 10,22 );
+        doc.setFont("helvetica", "normal");
+        doc.text("2022-10-17", 10,27 );
+
+        doc.setFontSize(8);
+        doc.setFont("helvetica", "bold");
+        doc.text("Intl Air Waybill", 40,22 );
+        doc.setFont("helvetica", "normal");
+        doc.text("554699393983", 40,27 );
+
+
+
+
+   /*      let info = []
+
+        this.array.forEach((element, index, array) => {
+            console.log(element, index, array);
+        
+            info.push([element.name, element.age, element.city])
+
+        }) */
+
+        // loop $store.state.definitiveData
+
+        let info = []
+
+        let count  = 1
+
+        this.$store.state.definitiveData.forEach((element_1, index, array) => {
+            console.log("array 1",element_1.group);
+
+
+
+            element_1.group.forEach((element_2, index , array) => {
+
+                    info.push(
+                    [
+                      '',
+                      '',
+                      element_2.description,
+                      'PY',
+                      'EA', 
+                      element_2.quanty,
+                      element_2.unit_value,
+                      element_2.total_value,
+                    ]
+                    )
+
+            })
+
+
+            info.push(
+                    [
+                      'Subtotal',
+                      element_1.group[0].part_number,
+                      '-',
+                      '-',
+                      '-',
+                      element_1.total_value / element_1.group[0].unit_value,
+                      '-',
+                      parseFloat(element_1.total_value).toFixed(2),
+                    ,
+                      
+                    ]
+                    )
+
+                
+
+        
+
+        })
+
+
+
+
+
+
+
+        // change position of autoTable
+        autoTable(doc, { 
+            html: '#my-table', 
+            startY: 140, 
+            theme: 'plain', 
+            tableWidth: 'auto',
+             styles: { 
+                fontSize: 4, 
+                cellPadding: 0.5, 
+                overflow: 'linebreak', 
+                columnWidth: 'wrap' 
+            }, 
+        
+        });
+
+
+
+
+        autoTable(doc, {
+        head: [['Marks & No', 'Part Number', 'HS Code/Description of Goods ', 'Origin of Mfg', 'Unit of Measure', 'Qty', 'Unit Value', 'Total Value']],
+        body: info 
+       /*   this.array.forEach(element => {
+            [
+                [element.name, element.name, element.name, element.name, element.name, element.name, element.name]
+            ]
+        
+            
+        })  */
+        /* [
+            ['David', 'david@example.com', 'Sweden'],
+            ['Castille', 'castille@example.com', 'Spain'],  ['David', 'david@example.com', 'Sweden'],
+            ['Castille', 'castille@example.com', 'Spain'],  ['David', 'david@example.com', 'Sweden'],
+           
+
+        ] */
+        })
+
+        
+
+      
+
+
+
+
+
+
+        // view in browser
+        doc.output("dataurlnewwindow");
+        
+
+        
+      
+
+          
 
         },
 
@@ -548,17 +286,29 @@ export default {
 
         },
 
+        hasPaginated(pdf) {
+            // add page number in footer
+        },
+
         beginPrint() {
 
-            console.log('Begin print')
+
+
+            
 
         },
 
-        beforeDownload(pdf) {
-
-            console.log('Before download')
-
-        },
+        async beforeDownload ({ html2pdf, options, pdfContent }) {
+           /*  await html2pdf().set(options).from(pdfContent).toPdf().get('pdf').then((pdf) => {
+                const totalPages = pdf.internal.getNumberOfPages()
+                for (let i = 1; i <= totalPages; i++) {
+                    pdf.setPage(i)
+                    pdf.setFontSize(10)
+                    pdf.setTextColor(150)
+                    pdf.text('Page ' + i + ' of ' + totalPages, (pdf.internal.pageSize.getWidth() * 0.88), (pdf.internal.pageSize.getHeight() - 0.3))
+                } 
+            }).save() */
+        }
 
     },
     components: {

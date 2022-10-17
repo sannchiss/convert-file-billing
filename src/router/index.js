@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 
+
 Vue.use(VueRouter)
 
 const routes = [
@@ -14,7 +15,12 @@ const routes = [
     path: '/pdfView',
     name: 'pdfView',
     component: () => import(/* webpackChunkName: "about" */ '../views/pdf/PdfView.vue')
-  }
+  },
+  {
+    path: '/test',
+    name: 'test',
+    component: () => import(/* webpackChunkName: "about" */ '../views/pdf/PdfView.vue')
+  },
 ]
 
 const router = new VueRouter({
