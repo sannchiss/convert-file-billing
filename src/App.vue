@@ -78,10 +78,6 @@
           </v-btn>
 
           <v-btn icon>
-          <v-icon>mdi-heart</v-icon>
-          </v-btn>
-
-          <v-btn icon>
           <v-icon>mdi-dots-vertical</v-icon>
           </v-btn>
 
@@ -130,25 +126,7 @@ export default {
   data: () => ({
 
     drawer: null,
-    items: [
-      {
-        title: 'My Music',
-        icon: 'mdi-music',
-        to: '/my-music',
-        active: true,
-        action: () => {
-          this.$router.push('/my-music')
-        },
-
-      },
-      {
-        title: 'My Videos',
-        icon: 'mdi-video',
-        to: '/my-videos',
-        action: () => {
-          this.$router.push('/my-videos')
-        },
-      }
+    items: [   
 
     ]
   }),

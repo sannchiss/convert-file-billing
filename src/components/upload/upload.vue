@@ -20,6 +20,8 @@
 
             <v-card>
 
+                <v-form ref="formReport">
+
                 <v-card-title>
                     {{ title }}
                 </v-card-title>
@@ -28,23 +30,131 @@
 
                     <v-row>
 
-                        <v-col md="15">
+                        <v-col cols="5">
 
-                            <v-file-input v-model="$store.state.file" prepend-icon="mdi-paperclip" accept="txt/*" label="File account Txa" show-size @change="onFileChange">
+                            <v-file-input 
+                            v-model="$store.state.file" 
+                            prepend-icon="mdi-paperclip"
+                            :rules="fileRules"
+                            accept="txt/*" 
+                            label="File account Txa" 
+                            show-size @change="onFileChange"
+                            >
                             </v-file-input>
 
                         </v-col>
 
-                        <v-col md="15">
+                    </v-row>
 
-                            <v-btn :loading="$store.state.loading" color="blue-grey" class="ma-2 white--text" v-on:click.prevent="generateReport">
-                                Upload
+                    <v-row>
+
+                        <v-card-text>
+                            <v-container>
+                                <v-row>
+                                <v-col
+                                    cols="12"
+                                    sm="6"
+                                    md="4"
+                                >
+                                <!--add file date-->
+
+                                <v-menu
+                                    ref="menu"
+                                    v-model="menu"
+                                    :close-on-content-click="false"
+                                    :return-value.sync="date"
+                                    transition="scale-transition"
+                                    offset-y
+                                    min-width="auto"
+                                >
+                                    <template v-slot:activator="{ on, attrs }">
+                                    <v-text-field
+                                        v-model="date"
+                                        label="Ship Date"
+                                        :rules="dateRules"
+                                        prepend-icon="mdi-calendar"
+                                        readonly
+                                        v-bind="attrs"
+                                        v-on="on"
+                                    ></v-text-field>
+                                    </template>
+                                    <v-date-picker
+                                    v-model="date"
+                                    no-title
+                                    scrollable
+                                    >
+                                    <v-spacer></v-spacer>
+                                    <v-btn
+                                        text
+                                        color="primary"
+                                        @click="menu = false"
+                                    >
+                                        Cancel
+                                    </v-btn>
+                                    <v-btn
+                                        text
+                                        color="primary"
+                                        @click="$refs.menu.save(date)"
+                                    >
+                                        OK
+                                    </v-btn>
+                                    </v-date-picker>
+                                </v-menu>
+
+
+                                </v-col>
+                                <v-col
+                                    cols="12"
+                                    sm="6"
+                                    md="4"
+                                >
+                                    <v-text-field
+                                    label="Intl Air Waybill"
+                                    v-model="intlAirWaybill"
+                                    :rules="intlAirWaybillRules"
+                                    ></v-text-field>
+                                </v-col>
+                                                              
+                               
+                                </v-row>
+
+                                <v-row>
+                                    
+                                    <v-col cols="5" sm="2">
+                                        <v-text-field
+                                        label="Total Weight"
+                                        v-model="totalWeight"
+                                        :rules="totalWeightRules"
+                                        required
+                                        ></v-text-field>
+                                    </v-col>      
+                                    <v-col cols="5" sm="2">
+                                        <v-text-field
+                                        label="Total Packages"
+                                        v-model="totalPackages"
+                                        :rules="totalPackagesRules"
+                                        required
+                                        ></v-text-field>
+                                    </v-col>                           
+
+                                </v-row>
+
+                            </v-container>
+                            <small>*indicates required field</small>
+                            </v-card-text>
+                            <v-card-actions>
+                            <v-spacer></v-spacer>                           
+                            <v-btn 
+                            :loading="$store.state.loading" 
+                            color="blue-grey" 
+                            class="ma-2 white--text" 
+                            v-on:click.prevent="generateReport">
+                                Generate PDF
                                 <v-icon right dark>
-                                    mdi-cloud-upload
+                                    mdi-file-pdf-box
                                 </v-icon>
                             </v-btn>
-
-                        </v-col>
+                            </v-card-actions>
 
                     </v-row>
 
@@ -54,9 +164,12 @@
 
                 </v-card-text>
 
+                </v-form>
+
             </v-card>
 
         </v-col>
+
 
     </v-row>
 
@@ -65,7 +178,6 @@
 
 <script>
 
-import VueHtml2pdf from 'vue-html2pdf'
 
 import { jsPDF } from "jspdf";
 import autoTable from 'jspdf-autotable';
@@ -74,245 +186,668 @@ export default {
 
     data: () => ({
         title: 'Upload File',
-        i: 0,
+        picker: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
+        menu: false,
+        intlAirWaybill: '',
+        totalWeight: '',
+        totalPackages: '',
 
-        array: [
-            { id: 1, name: 'John', age: 30, city: 'New York' },
-            { id: 2, name: 'Marry', age: 28, city: 'London' },
-            { id: 3, name: 'Peter', age: 32, city: 'Paris' },
-            { id: 4, name: 'John', age: 30, city: 'New York' },
-            { id: 5, name: 'Marry', age: 28, city: 'London' },
-            { id: 6, name: 'Peter', age: 32, city: 'Paris' },
-            { id: 7, name: 'John', age: 30, city: 'New York' },
-            { id: 8, name: 'Marry', age: 28, city: 'London' },
-            { id: 9, name: 'Peter', age: 32, city: 'Paris' },
-            { id: 10, name: 'John', age: 30, city: 'New York' },
-            { id: 11, name: 'Marry', age: 28, city: 'London' },
-            { id: 12, name: 'Peter', age: 32, city: 'Paris' },
-            { id: 13, name: 'John', age: 30, city: 'New York' },
-            { id: 14, name: 'Marry', age: 28, city: 'London' },
-            { id: 15, name: 'Peter', age: 32, city: 'Paris' },
-            { id: 16, name: 'John', age: 30, city: 'New York' },
-            { id: 17, name: 'Marry', age: 28, city: 'London' },
-            { id: 18, name: 'Peter', age: 32, city: 'Paris' },
-            { id: 19, name: 'John', age: 30, city: 'New York' },
-            { id: 20, name: 'Marry', age: 28, city: 'London' },
-            { id: 21, name: 'Peter', age: 32, city: 'Paris' },
-            
-            
-            
+        fileRules: [
+            v => !!v || 'File is required',
         ],
 
-        
+        dateRules: [
+            v => !!v || 'Date is required',
+        ],
+
+        intlAirWaybillRules: [
+            v => !!v || 'Intl Air Waybill is required',
+            //limit to 11 characters
+            v => v.length <= 12 || 'Intl Air Waybill must be less than 12 characters',
+        ],
+        totalWeightRules: [
+            v => !!v || 'Total Weight is required',
+        ],
+        totalPackagesRules: [
+            v => !!v || 'Total Packages is required',
+        ],
 
     }),
     methods: {
-
-        testing() {
-            // call router
-            this.$router.push({ name: 'test' })
-        },
+       
         onFileChange(file) {
             this.$store.commit('setFile', file)
         },
 
         generateReport() {
-         //  this.$refs.html2Pdf.generatePdf()
 
-        // Landscape export, 2×4 inches
-        const doc = new jsPDF({
-
-            pageFormat: 'a3',
-
-         });
-
-        doc.setFontSize(10);
-        doc.setFont("helvetica", "bold");
-        doc.text("FedEx IPD Consolidated Commercial Invoice", 45,15 );
-
-
-        doc.setFontSize(8);
-        doc.setFont("helvetica", "bold");
-        doc.text("Ship Date", 10,22 );
-        doc.setFont("helvetica", "normal");
-        doc.text("2022-10-17", 10,27 );
-
-        doc.setFontSize(8);
-        doc.setFont("helvetica", "bold");
-        doc.text("Intl Air Waybill", 40,22 );
-        doc.setFont("helvetica", "normal");
-        doc.text("554699393983", 40,27 );
+            // get  value v-date-picker
+            var date = this.date;
+            // get value v-text-field
+            var intlAirWaybill = this.intlAirWaybill;
+            var totalWeight = this.totalWeight;
+            var totalPackages = this.totalPackages;
 
 
 
+        if(this.$refs.formReport.validate()){
+                
 
-   /*      let info = []
+                // get date formnate yyyy-mm-dd
+                var today = new Date();
+                var dd = String(today.getDate()).padStart(2, '0');
+                var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+                var yyyy = today.getFullYear();
 
-        this.array.forEach((element, index, array) => {
-            console.log(element, index, array);
+                today = yyyy + '-' + mm + '-' + dd;
+            
+
+                
+                const doc = new jsPDF({
+
+                    unit: 'mm',
+                    format: 'a4',
+
+                });
+
+                doc.setFontSize(10);
+                doc.setFont("helvetica", "bold");
+                doc.text("FedEx IPD Consolidated Commercial Invoice", 45,15 );
+
+
+                doc.setFontSize(8);
+                doc.setFont("helvetica", "bold");
+                doc.text("Ship Date", 10,22 );
+                doc.setFont("helvetica", "normal");
+                doc.text(date, 10,27 );
+
+                doc.setFontSize(8);
+                doc.setFont("helvetica", "bold");
+                doc.text("Intl Air Waybill", 40,22 );
+                doc.setFont("helvetica", "normal");
+                doc.text(intlAirWaybill, 40,27 );
+                doc.addImage("https://www.webarcode.com/barcode/image.php?code=ACI-"+ intlAirWaybill +"&type=C128B&xres=1&height=100&width=258&font=2&output=png&style=196", "JPEG", 100, 18, 70, 20);
+
+                doc.setFontSize(8);
+                doc.setFont("helvetica", "bold");
+                doc.text("Invoice Number", 10,35 );
+                doc.setFont("helvetica", "normal");
+                doc.text("12312314", 10,40 );
+
+
+                // add line break
+                doc.line(10, 45, 200, 45);
+
+
+                doc.setFontSize(8);
+                doc.setFont("helvetica", "bold");
+                doc.text("Bill Trans. Charges", 10,52);
+                doc.setFont("helvetica", "normal");
+                doc.text("4212445545", 10,58 );
+
+
+                doc.setFontSize(8);
+                doc.setFont("helvetica", "bold");
+                doc.text("Bill D/T/F", 50,52);
+                doc.setFont("helvetica", "normal");
+                doc.text("431591944", 50,58 );
+
+
+                doc.setFontSize(8);
+                doc.setFont("helvetica", "bold");
+                doc.text("Currency", 90,52);
+                doc.setFont("helvetica", "normal");
+                doc.text("431591944", 90,58 );
+
+                doc.setFontSize(8);
+                doc.setFont("helvetica", "bold");
+                doc.text("Customer References", 130,52);
+                doc.setFont("helvetica", "normal");
+                doc.text("", 130,58 );
+
+                doc.setFontSize(8);
+                doc.setFont("helvetica", "bold");
+                doc.text("Terms of Sale", 10,65);
+                doc.setFont("helvetica", "normal");
+                doc.text("FCA", 10, 70);
+
+                doc.setFontSize(8);
+                doc.setFont("helvetica", "bold");
+                doc.text("Total Wgt", 50,65);
+                doc.setFont("helvetica", "normal");
+                doc.text("27.40", 50, 70);
+
+
+                doc.setFontSize(8);
+                doc.setFont("helvetica", "bold");
+                doc.text("Wgt Type", 90,65);
+                doc.setFont("helvetica", "normal");
+                doc.text("KGS", 90, 70);
+
+                doc.setFontSize(8);
+                doc.setFont("helvetica", "bold");
+                doc.text("Total Packages", 130,65);
+                doc.setFont("helvetica", "normal");
+                doc.text("2", 130, 70);
+
+
+                /**************************** */
+
+                doc.setFontSize(9);
+                doc.setFont("helvetica", "bold");       
+                doc.text("EXPORTER/SHIPPER", 10,77);
+                doc.setFont("helvetica", "italic");
+            
+                doc.setFontSize(8);
+                doc.setFont("helvetica", "bold");
+                doc.text("Contact:   CUSTOMER SERVICE", 10, 82);
+
+                doc.setFontSize(8);
+                doc.setFont("helvetica", "bold");
+                doc.text("Co Name: STEMS AND BUNCHES", 10, 87);
+
+                doc.setFontSize(8);
+                doc.setFont("helvetica", "bold");
+                doc.text("Address1: KALOS LEATHER COMPANY", 10, 92);
+
+                doc.setFontSize(8);
+                doc.setFont("helvetica", "bold");
+                doc.text("Address2: -", 10, 97);
+
+                doc.setFontSize(8);
+                doc.setFont("helvetica", "bold");
+                doc.text("City: -", 10, 102);
+
+                doc.setFontSize(8);
+                doc.setFont("helvetica", "bold");
+                doc.text("St/PV: -                        Country/Territory: PY        Postal:12345", 10, 107);
+
+                doc.setFontSize(8);
+                doc.setFont("helvetica", "bold");
+                doc.text("Phone:      57 3156944600            Tax ID:", 10, 112);
+
+                /**************************** */
+
+                doc.setFontSize(9);
+                doc.setFont("helvetica", "bold");       
+                doc.text("BROKER", 10,119);
+                doc.setFont("helvetica", "italic");
+
+                
+                doc.setFontSize(8);
+                doc.setFont("helvetica", "bold");
+                doc.text("Contact:   -", 10, 124);
+
+                doc.setFontSize(8);
+                doc.setFont("helvetica", "bold");
+                doc.text("Co Name: -", 10, 129);
+
+                doc.setFontSize(8);
+                doc.setFont("helvetica", "bold");
+                doc.text("Address1: -", 10, 134);
+
+                doc.setFontSize(8);
+                doc.setFont("helvetica", "bold");
+                doc.text("Address2: -", 10, 139);
+
+                doc.setFontSize(8);
+                doc.setFont("helvetica", "bold");
+                doc.text("City: -", 10, 144);
+
+                doc.setFontSize(8);
+                doc.setFont("helvetica", "bold");
+                doc.text("St/PV: -                        Country/Territory: -        Postal:-", 10, 149);
+
+                doc.setFontSize(8);
+                doc.setFont("helvetica", "bold");
+                doc.text("Phone:      ", 10, 154);
+
         
-            info.push([element.name, element.age, element.city])
+                /***
+                 * SEGUNDA COLUMNA
+                 ********** */
+                
+                doc.setFontSize(9);
+                doc.setFont("helvetica", "bold");       
+                doc.text("SHIP TO (CONSIGNEE)", 110,77);
+                doc.setFont("helvetica", "italic");
+            
+                doc.setFontSize(8);
+                doc.setFont("helvetica", "bold");
+                doc.text("Contact:   via FedEx IPD", 110, 82);
 
-        }) */
+                doc.setFontSize(8);
+                doc.setFont("helvetica", "bold");
+                doc.text("Co Name: FEDEX EXPRESS", 110, 87);
 
-        // loop $store.state.definitiveData
+                doc.setFontSize(8);
+                doc.setFont("helvetica", "bold");
+                doc.text("Address1: 6100 NW 36 Street", 110, 92);
 
-        let info = []
+                doc.setFontSize(8);
+                doc.setFont("helvetica", "bold");
+                doc.text("Address2: Building 831", 110, 97);
 
-        let count  = 1
+                doc.setFontSize(8);
+                doc.setFont("helvetica", "bold");
+                doc.text("City:          Miami", 110, 102);
 
-        this.$store.state.definitiveData.forEach((element_1, index, array) => {
-            console.log("array 1",element_1.group);
+                doc.setFontSize(8);
+                doc.setFont("helvetica", "bold");
+                doc.text("St/PV:        FL                Country/Territory: US        Postal:33115", 110, 107);
+
+                doc.setFontSize(8);
+                doc.setFont("helvetica", "bold");
+                doc.text("Phone:       7862656564", 110, 112);
+
+                /******************* */
+
+                doc.setFontSize(9);
+                doc.setFont("helvetica", "bold");       
+                doc.text("IMPORTER", 110,119);
+                doc.setFont("helvetica", "italic");
+
+                
+                doc.setFontSize(8);
+                doc.setFont("helvetica", "bold");
+                doc.text("Contact:   VIA IPD SERVICE", 110, 124);
+
+                doc.setFontSize(8);
+                doc.setFont("helvetica", "bold");
+                doc.text("Co Name: FEDEX EXPRESS", 110, 129);
+
+                doc.setFontSize(8);
+                doc.setFont("helvetica", "bold");
+                doc.text("Address1: 6100 NW 36 Street", 110, 134);
+
+                doc.setFontSize(8);
+                doc.setFont("helvetica", "bold");
+                doc.text("Address2: Building 831", 110, 139);
+
+                doc.setFontSize(8);
+                doc.setFont("helvetica", "bold");
+                doc.text("City:           MIAMI", 110, 144);
+
+                doc.setFontSize(8);
+                doc.setFont("helvetica", "bold");
+                doc.text("St/PV:         FL                Country/Territory: US        Postal:33115", 110, 149);
+
+                doc.setFontSize(8);
+                doc.setFont("helvetica", "bold");
+                doc.text("Phone:       7862656564      Tax ID:-", 110, 154);
 
 
 
-            element_1.group.forEach((element_2, index , array) => {
+
+
+                let info = [] 
+
+                this.$store.state.definitiveData.forEach((element_1, index, array) => {
+
+                    element_1.group.forEach((element_2, index , array) => {
+
+                            info.push(
+                            [
+                            '',
+                            '',
+                            element_2.description,
+                            'PY',
+                            'EA', 
+                            element_2.quanty,
+                            element_2.unit_value,
+                            element_2.total_value,
+                            ]
+                            )
+
+                    })
+
 
                     info.push(
+                            [
+                            'Subtotal',
+                            element_1.group[0].part_number,
+                            '',
+                            '',
+                            '',
+                            element_1.total_value / element_1.group[0].unit_value,
+                            '-',
+                            parseFloat(element_1.total_value).toFixed(2),
+                            ,
+                            
+                            ]
+                            )
+
+                })
+
+
+
+                autoTable(doc, { 
+                    head: [
+                    ['Marks & No', 
+                    'Part Number', 
+                    'HS Code/Description of Goods ', 
+                    'Origin of Mfg', 
+                    'Unit of Measure', 
+                    'Qty', 'Unit Value', 
+                    'Total Value'
+                    ]],
+                    styles: {
+                        fontSize: 8,
+                        cellPadding: 0.5,
+                        overflow: 'linebreak',
+                        columnWidth: 'wrap',
+                        halign: 'center',
+                        valign: 'middle',
+                        cellWidth: 'auto',
+                        minCellHeight: 10,
+                        rowPageBreak: 'avoid',
+                        
+                    },
+                    headStyles: { 
+                        // textcolor black
+                        textColor: [0, 0, 0],
+                        fontStyle: 'bold',
+                        fontSize: 8,
+                        halign: 'center',
+                        valign: 'middle',
+                        // add borders externally
+                        lineWidth: 0.1,
+                        lineColor: [0, 0, 0],
+
+                    },           
+                    startY: 165, 
+                    tableWidth: 'auto',
+                    theme: 'plain',
+                    body:          
+                    info,
+                    bodyStyles: {
+                        minCellHeight: 10,
+                        valign: 'middle',
+                        halign: 'center',
+                        fontSize: 8,
+                        cellPadding: 0.5, 
+                    },
+
+                
+                
+
+                    didParseCell: function (data) {
+                
+                    // change color of row content word "Subtotal" y column de al lado
+
+                    let index 
+                        if (data.cell.raw == 'Subtotal' ) {
+
+                                data.cell.styles.fillColor = [229,229,229];
+                                data.cell.styles.textColor = [0, 0, 0];
+                                data.cell.styles.fontStyle = 'bold';
+                                data.cell.styles.fontSize = 8;
+                                data.cell.styles.halign = 'center';
+                                data.cell.styles.valign = 'middle';
+                            
+
+                                // capture index of row when find "Subtotal"
+                                index = data.row.index
+                            
+                        }  
+
+                        if ( data.row.index == index  ) {
+
+                        let col = data.column.dataKey
+
+
+                            // change color of row content word "Subtotal" y column de al lado
+                            data.row.cells[col + 1].styles.fillColor = [229,229,229];
+                            data.row.cells[col + 1].styles.textColor = [0, 0, 0];
+                            data.row.cells[col + 1].styles.fontStyle = 'bold';
+                            data.row.cells[col + 1].styles.fontSize = 8;
+                            data.row.cells[col + 1].styles.halign = 'center';
+                            data.row.cells[col + 1].styles.valign = 'middle'; 
+
+                            // change color of row content word "Subtotal" y column de al lado
+                            data.row.cells[col + 2].styles.fillColor = [229,229,229];
+                            data.row.cells[col + 2].styles.textColor = [0, 0, 0];
+                            data.row.cells[col + 2].styles.fontStyle = 'bold';
+                            data.row.cells[col + 2].styles.fontSize = 8;
+                            data.row.cells[col + 2].styles.halign = 'center';
+                            data.row.cells[col + 2].styles.valign = 'middle';
+
+                            // change color of row content word "Subtotal" y column de al lado
+                            data.row.cells[col + 3].styles.fillColor = [229,229,229];
+                            data.row.cells[col + 3].styles.textColor = [0, 0, 0];
+                            data.row.cells[col + 3].styles.fontStyle = 'bold';
+                            data.row.cells[col + 3].styles.fontSize = 8;
+                            data.row.cells[col + 3].styles.halign = 'center';
+                            data.row.cells[col + 3].styles.valign = 'middle';
+
+                            // change color of row content word "Subtotal" y column de al lado
+                            data.row.cells[col + 4].styles.fillColor = [229,229,229];
+                            data.row.cells[col + 4].styles.textColor = [0, 0, 0];
+                            data.row.cells[col + 4].styles.fontStyle = 'bold';
+                            data.row.cells[col + 4].styles.fontSize = 8;
+                            data.row.cells[col + 4].styles.halign = 'center';
+                            data.row.cells[col + 4].styles.valign = 'middle';
+
+
+                            // change color of row content word "Subtotal" y column de al lado
+                            data.row.cells[col + 5].styles.fillColor = [229,229,229];
+                            data.row.cells[col + 5].styles.textColor = [0, 0, 0];
+                            data.row.cells[col + 5].styles.fontStyle = 'bold';
+                            data.row.cells[col + 5].styles.fontSize = 8;
+                            data.row.cells[col + 5].styles.halign = 'center';
+                            data.row.cells[col + 5].styles.valign = 'middle';
+
+                            // change color of row content word "Subtotal" y column de al lado
+                            data.row.cells[col + 6].styles.fillColor = [229,229,229];
+                            data.row.cells[col + 6].styles.textColor = [0, 0, 0];
+                            data.row.cells[col + 6].styles.fontStyle = 'bold';
+                            data.row.cells[col + 6].styles.fontSize = 8;
+                            data.row.cells[col + 6].styles.halign = 'center';
+                            data.row.cells[col + 6].styles.valign = 'middle';
+
+                            // change color of row content word "Subtotal" y column de al lado
+                            data.row.cells[col + 7].styles.fillColor = [229,229,229];
+                            data.row.cells[col + 7].styles.textColor = [0, 0, 0];
+                            data.row.cells[col + 7].styles.fontStyle = 'bold';
+                            data.row.cells[col + 7].styles.fontSize = 8;
+                            data.row.cells[col + 7].styles.halign = 'center';
+                            data.row.cells[col + 7].styles.valign = 'middle';
+
+                                // change color of row content word "Subtotal" y column de al lado
+                            data.row.cells[col + 7].styles.fillColor = [229,229,229];
+                            data.row.cells[col + 7].styles.textColor = [0, 0, 0];
+                            data.row.cells[col + 7].styles.fontStyle = 'bold';
+                            data.row.cells[col + 7].styles.fontSize = 8;
+                            data.row.cells[col + 7].styles.halign = 'center';
+                            data.row.cells[col + 7].styles.valign = 'middle';
+
+                    }
+                        
+
+
+                    },
+                    
+                
+                })
+
+
+                let footer = [         
                     [
-                      '',
-                      '',
-                      element_2.description,
-                      'PY',
-                      'EA', 
-                      element_2.quanty,
-                      element_2.unit_value,
-                      element_2.total_value,
-                    ]
-                    )
-
-            })
-
-
-            info.push(
+                    '',
+                    '',              
+                    'Total Shipment Wgt:',         
+                    totalWeight,
+                    ],
                     [
-                      'Subtotal',
-                      element_1.group[0].part_number,
-                      '-',
-                      '-',
-                      '-',
-                      element_1.total_value / element_1.group[0].unit_value,
-                      '-',
-                      parseFloat(element_1.total_value).toFixed(2),
-                    ,
-                      
+                    '',
+                    '',              
+                    'Total Commodity Value:',         
+                    '20 kg',
+                    ],
+                    [
+                    'Comments:',
+                    '',              
+                    'Freight:',         
+                    '.00 kg',     
+                    ],
+                    [
+                    '',
+                    '',              
+                    'Insurance:',         
+                    '.00 kg',
+                    ],
+                    [
+                    '',
+                    '',              
+                    'Other:',         
+                    '.00 kg',
+                    ],            
+                    [
+                    '',
+                    '',              
+                    'Tax Amount:',         
+                    '.00 kg',
+                    ],            
+                    [
+                    '',
+                    '',              
+                    'Total Invoice Value:',         
+                    '7687868.00',
+                    ],
+                    [
+                    'I DECLARE ALL INFORMATION CONTAINED IN THIS REPORT TO BE TRUE AND CORRECT',
+                    '',              
+                    '',         
+                    '',
+                    ],
+                    [
+                    '',
+                    '',         
+                    '',
+                    '',
                     ]
-                    )
+
+                ]
+
+
+
+                
+                // add footer final table
+                autoTable(doc, {
+                    head: [['','','','','','','','']],
+                    body: footer,
+                    startY: doc.autoTable.previous.finalY + 1,
+                    theme: 'plain',
+                    styles: { 
+                        textColor: [0,0,0],
+                        fontSize: 8,
+                        fontStyle: 'bold',
+                        halign: 'left',
+                        valign: 'middle',
+                        overflow: 'linebreak',
+                        columnWidth: 'wrap',
+                        cellWidth: 'auto',
+                        minCellHeight: 10,
+                        rowPageBreak: 'avoid',
+                        // change hight of row
+                        cellHeight: 10,
+                        fontSize: 8,
+                        cellPadding: 0.1,
+
+                    },
+
+                })
+
+                let piePag = [
+                    [
+                    '_______________________________________________________________________________________________________________',
+                    
+                    ],
+                    [
+                    'Signature of Shipper/Exporter (Name and Title)                     Date:'+ today
+                        ,
+                    ],
+                    [
+                        ''
+                    ],
+                    [
+                    'CUSTOMER SERVICE',
+                    ],
+                    [
+                    '_______________________________________________________________________________________________________________',
+                    ],
+                    [
+                        'Name (Printed) of Shipper/Exporter (Name and Title)'
+
+                    ]
+
+            ]
 
                 
 
-        
 
-        })
-
-
-
-
-
-
-
-        // change position of autoTable
-        autoTable(doc, { 
-            html: '#my-table', 
-            startY: 140, 
-            theme: 'plain', 
-            tableWidth: 'auto',
-             styles: { 
-                fontSize: 4, 
-                cellPadding: 0.5, 
-                overflow: 'linebreak', 
-                columnWidth: 'wrap' 
-            }, 
-        
-        });
+                autoTable(doc, {
+                    head: [['']],
+                    body: piePag,
+                    startY: doc.autoTable.previous.finalY + 2,
+                    cellWidth: 'auto',
+                    theme: 'plain',
+                    styles: { 
+                        textColor: [0,0,0],
+                        fontSize: 8,
+                        halign: 'left',
+                        valign: 'middle',
+                        overflow: 'linebreak',
+                        columnWidth: 'wrap',
+                        cellWidth: 'auto',
+                        // aumentar altura
 
 
+                    
+
+                    },
+
+                }
+
+                
+
+                )
+
+                //doc.save('table.pdf')
 
 
-        autoTable(doc, {
-        head: [['Marks & No', 'Part Number', 'HS Code/Description of Goods ', 'Origin of Mfg', 'Unit of Measure', 'Qty', 'Unit Value', 'Total Value']],
-        body: info 
-       /*   this.array.forEach(element => {
-            [
-                [element.name, element.name, element.name, element.name, element.name, element.name, element.name]
-            ]
-        
-            
-        })  */
-        /* [
-            ['David', 'david@example.com', 'Sweden'],
-            ['Castille', 'castille@example.com', 'Spain'],  ['David', 'david@example.com', 'Sweden'],
-            ['Castille', 'castille@example.com', 'Spain'],  ['David', 'david@example.com', 'Sweden'],
-           
+                // generate page count
+                var pageCount = doc.internal.getNumberOfPages();
 
-        ] */
-        })
+                // add page count to head
+                doc.setFontSize(10);
+                doc.setFont("helvetica", "normal");
+                doc.text("Page " + pageCount, 180, 10);
 
-        
 
-      
+                // view in browser
+                doc.output("dataurlnewwindow");
 
 
 
 
+            }
 
+            else{
 
-        // view in browser
-        doc.output("dataurlnewwindow");
-        
+   
+                
 
-        
-      
+            }
 
-          
-
-        },
-
-        onProgress(progress) {
-
-            console.log(progress)
-
-        },
-
-        hasStartedGeneration() {
-
-            console.log('Started')
-
-        },
-
-        hasGenerated(pdf) {
-
-            console.log('Generated')
-
-        },
-
-        hasPaginated(pdf) {
-            // add page number in footer
-        },
-
-        beginPrint() {
-
-
-
-            
-
-        },
-
-        async beforeDownload ({ html2pdf, options, pdfContent }) {
-           /*  await html2pdf().set(options).from(pdfContent).toPdf().get('pdf').then((pdf) => {
-                const totalPages = pdf.internal.getNumberOfPages()
-                for (let i = 1; i <= totalPages; i++) {
-                    pdf.setPage(i)
-                    pdf.setFontSize(10)
-                    pdf.setTextColor(150)
-                    pdf.text('Page ' + i + ' of ' + totalPages, (pdf.internal.pageSize.getWidth() * 0.88), (pdf.internal.pageSize.getHeight() - 0.3))
-                } 
-            }).save() */
         }
+
+
+
+  
 
     },
     components: {
-        VueHtml2pdf,
         contentToPrint: require('@/components/upload/contentToPrint.vue').default,
 
     },
@@ -322,97 +857,30 @@ export default {
 
 <style lang="scss">
 // add style table
-@import '~vuetify/src/styles/styles.sass';
+#output {
+        width: 100%;
+        height: 100vh;
+        margin-top: 20px;
+      }
 
-#label {
-    position: absolute;
-}
+      #my-table {
+        border: solid 1px #565656;
+        border-collapse: collapse;
+        font-family: helvetica,serif;
+        font-size: 10pt;
+        width: 180mm;
+      }
 
-#label_cont {
-    position: relative;
-    text-align: left;
-}
-
-.font_normal {
-    font-size: 13px;
-    font-weight: normal;
-    font-family: 'Calibri';
-}
-
-.font_min_normal {
-    font-size: 12px;
-    font-weight: bold;
-    font-family: 'Calibri';
-}
-
-.font_bold {
-    font-size: 16px;
-    font-weight: bold;
-    font-family: 'Calibri';
-}
-
-.font_bold_m {
-    font-weight: bold;
-    font-family: 'Calibri';
-    font-size: 13px;
-    //subrayado
-    text-decoration: underline;
-}
-
-.td_list {
-    font-size: 13px;
-    font-weight: normal;
-    font-family: 'Calibri';
-    background: #a09b9b;
-}
-
-/*   .on-top {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    z-index: 999;
-}    */
-
-// add style table-items-billing
-.table-items-billing {
-    width: 100%;
-    border-collapse: collapse;
-    margin: 0 auto;
-    border-radius: 0px;
-    font-size: 10px;
-    border-spacing: 0;
-    border: 1px solid #1b1919;
-    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-
-    .thead {
+      #my-table th {
+        border: solid 1px #565656;
+        background-color: #9a7f5b;
+        color: #eee;
         text-align: left;
-        font-size: 12px;
-        padding: 8px;
-        border-bottom: 1px solid #e0e0e0;
+        padding: 5px;
+      }
 
-    }
-
-    .tbody {
-        tr {
-            border-bottom: 1px solid #e0e0e0;
-
-            td {
-                padding: 8px;
-                font-size: 10px;
-                align-content: flex-start;
-            }
-
-            &:last-child {
-                border-bottom: 0;
-            }
-        }
-
-        td {
-            padding: 8px;
-            font-size: 10px;
-            align-content: flex-start;
-        }
-    }
-}
+      #my-table td {
+        border: solid 1px #565656;
+        padding: 2px 5px;
+      }
 </style>

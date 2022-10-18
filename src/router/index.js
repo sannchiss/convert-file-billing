@@ -11,16 +11,8 @@ const routes = [
     name: 'upload',
     component: () => import(/* webpackChunkName: "about" */ '../views/upload/UploadView.vue')
   },
-  {
-    path: '/pdfView',
-    name: 'pdfView',
-    component: () => import(/* webpackChunkName: "about" */ '../views/pdf/PdfView.vue')
-  },
-  {
-    path: '/test',
-    name: 'test',
-    component: () => import(/* webpackChunkName: "about" */ '../views/pdf/PdfView.vue')
-  },
+  
+ 
 ]
 
 const router = new VueRouter({
