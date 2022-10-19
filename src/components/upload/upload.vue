@@ -379,7 +379,7 @@ export default {
 
                 doc.setFontSize(8);
                 doc.setFont("helvetica", "bold");
-                doc.text("City: ASUNCIÓN", 10, 102);
+                doc.text("City:           Asunción", 10, 102);
 
                 doc.setFontSize(8);
                 doc.setFont("helvetica", "bold");
@@ -461,7 +461,7 @@ export default {
 
                 doc.setFontSize(8);
                 doc.setFont("helvetica", "bold");
-                doc.text("Phone:       7862656564", 110, 112);
+                doc.text("Phone:      7862656564", 110, 112);
 
                 /******************* */
 
@@ -489,7 +489,7 @@ export default {
 
                 doc.setFontSize(8);
                 doc.setFont("helvetica", "bold");
-                doc.text("City:           MIAMI", 110, 144);
+                doc.text("City:           Miami", 110, 144);
 
                 doc.setFontSize(8);
                 doc.setFont("helvetica", "bold");
