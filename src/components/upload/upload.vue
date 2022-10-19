@@ -103,6 +103,19 @@
 
 
                                 </v-col>
+
+                                <v-col
+                                    cols="12"
+                                    sm="6"
+                                    md="4"
+                                >
+                                    <v-text-field
+                                    label="Invoice Number"
+                                    v-model="invoiceNumber"
+                                    :rules="invoiceNumberRules"
+                                    ></v-text-field>
+                                </v-col>
+
                                 <v-col
                                     cols="12"
                                     sm="6"
@@ -188,7 +201,9 @@ export default {
         title: 'Upload File',
         picker: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
         menu: false,
+        date: '',
         intlAirWaybill: '',
+        invoiceNumber: '',
         totalWeight: '',
         totalPackages: '',
 
@@ -205,6 +220,11 @@ export default {
             //limit to 11 characters
             v => v.length <= 12 || 'Intl Air Waybill must be less than 12 characters',
         ],
+
+        invoiceNumberRules: [
+            v => !!v || 'Invoice Number is required',
+        ],
+
         totalWeightRules: [
             v => !!v || 'Total Weight is required',
         ],
@@ -225,6 +245,7 @@ export default {
             var date = this.date;
             // get value v-text-field
             var intlAirWaybill = this.intlAirWaybill;
+            var invoiceNumber = this.invoiceNumber;
             var totalWeight = this.totalWeight;
             var totalPackages = this.totalPackages;
 
@@ -249,6 +270,7 @@ export default {
                     format: 'a4',
 
                 });
+             
 
                 doc.setFontSize(10);
                 doc.setFont("helvetica", "bold");
@@ -266,13 +288,13 @@ export default {
                 doc.text("Intl Air Waybill", 40,22 );
                 doc.setFont("helvetica", "normal");
                 doc.text(intlAirWaybill, 40,27 );
-                doc.addImage("https://www.webarcode.com/barcode/image.php?code=ACI-"+ intlAirWaybill +"&type=C128B&xres=1&height=100&width=258&font=2&output=png&style=196", "JPEG", 100, 18, 70, 20);
+                doc.addImage("https://www.webarcode.com/barcode/image.php?code=ACI-"+ intlAirWaybill +"&type=C128B&xres=1&height=100&width=258&font=2&output=png&style=196", "JPEG", 100, 18, 85, 22);
 
                 doc.setFontSize(8);
                 doc.setFont("helvetica", "bold");
                 doc.text("Invoice Number", 10,35 );
                 doc.setFont("helvetica", "normal");
-                doc.text("12312314", 10,40 );
+                doc.text(invoiceNumber, 10,40 );
 
 
                 // add line break
@@ -676,14 +698,14 @@ export default {
                     '',
                     '',              
                     'Total Shipment Wgt:',         
-                    totalWeight,
+                    totalWeight+' Kg',
                     ],
                     [
                     '',
                     '',              
                     'Total Commodity Value:',         
-                    '20 kg',
-                    ],
+                    (this.$store.state.totalCommodityValue.total_value).toFixed(2),
+                    ],                   
                     [
                     'Comments:',
                     '',              
@@ -712,7 +734,7 @@ export default {
                     '',
                     '',              
                     'Total Invoice Value:',         
-                    '7687868.00',
+                    (this.$store.state.totalCommodityValue.total_value).toFixed(2),
                     ],
                     [
                     'I DECLARE ALL INFORMATION CONTAINED IN THIS REPORT TO BE TRUE AND CORRECT',
@@ -734,7 +756,7 @@ export default {
                 
                 // add footer final table
                 autoTable(doc, {
-                    head: [['','','','','','','','']],
+                    head: [['','','','']],
                     body: footer,
                     startY: doc.autoTable.previous.finalY + 1,
                     theme: 'plain',
@@ -815,14 +837,18 @@ export default {
 
                 //doc.save('table.pdf')
 
+                // count number of pages
 
-                // generate page count
-                var pageCount = doc.internal.getNumberOfPages();
+                var pageCount = doc.internal.getNumberOfPages(); //Total Page Number
+                for(var i = 0; i < pageCount; i++) {
+                doc.setPage(i);
+                let pageCurrent = doc.internal.getCurrentPageInfo().pageNumber; //Current Page
+                doc.setFontSize(9);
+                doc.text('page: ' + pageCurrent + '/' + pageCount, 10, 10);
+                }
 
-                // add page count to head
-                doc.setFontSize(10);
-                doc.setFont("helvetica", "normal");
-                doc.text("Page " + pageCount, 180, 10);
+
+
 
 
                 // view in browser

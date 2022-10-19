@@ -18,6 +18,7 @@ export default new Vuex.Store({
     dataFile: [],
     groupPartNumber: [],
     definitiveData: [],
+    totalCommodityValue: [],
 
   },
   getters: {
@@ -239,7 +240,7 @@ export default new Vuex.Store({
 
 
           // sum total_value in sumTotalValue
-          const totalValue = sumTotalValue.reduce((a, b) => {
+          state.totalCommodityValue = sumTotalValue.reduce((a, b) => {
             return {
               quanty: a.quanty,
               unit_value: a.unit_value,
@@ -247,7 +248,7 @@ export default new Vuex.Store({
             }
           })
 
-        // console.log("El resultado es totalValue: ",totalValue)
+         console.log("El resultado es totalCommodityValue: ",state.totalCommodityValue)
 
          // console.log("El resultado es groupPartNumber: ", state.groupPartNumber)
           
