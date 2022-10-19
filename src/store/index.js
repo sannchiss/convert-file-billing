@@ -62,17 +62,6 @@ export default new Vuex.Store({
           /********************************************** */
 
 
-           /* const headObj = headFile.map((item) => {
-            return {
-              num_timbre: item[1],
-              date_valid_until: item[3],
-              date_start_until: item[6],
-              num_doc: item[13],
-            }
-          }) */ 
-
-
-
           for (var i = 1; i < lines.length; i++) {
             var line = lines[i]
             var parts = line.split(';')
@@ -284,11 +273,6 @@ export default new Vuex.Store({
 
           //console.log("El resultado es sumTotalValue: ", state.definitiveData) 
 
-
-           
-         
-
-          
 
 
         }

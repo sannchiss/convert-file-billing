@@ -37,7 +37,7 @@
                             prepend-icon="mdi-paperclip"
                             :rules="fileRules"
                             accept="txt/*" 
-                            label="File account Txa" 
+                            label="File .txt" 
                             show-size @change="onFileChange"
                             >
                             </v-file-input>
@@ -124,6 +124,7 @@
                                     <v-text-field
                                     label="Intl Air Waybill"
                                     v-model="intlAirWaybill"
+                                    :maxlength="12"
                                     :rules="intlAirWaybillRules"
                                     ></v-text-field>
                                 </v-col>
@@ -135,7 +136,7 @@
                                     
                                     <v-col cols="5" sm="2">
                                         <v-text-field
-                                        label="Total Weight"
+                                        label="Total Weight (KGS)"
                                         v-model="totalWeight"
                                         :rules="totalWeightRules"
                                         required
@@ -319,7 +320,7 @@ export default {
                 doc.setFont("helvetica", "bold");
                 doc.text("Currency", 90,52);
                 doc.setFont("helvetica", "normal");
-                doc.text("431591944", 90,58 );
+                doc.text("USD", 90,58 );
 
                 doc.setFontSize(8);
                 doc.setFont("helvetica", "bold");
