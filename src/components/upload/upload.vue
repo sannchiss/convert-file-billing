@@ -337,7 +337,7 @@ export default {
                 doc.setFont("helvetica", "bold");
                 doc.text("Total Wgt", 50,65);
                 doc.setFont("helvetica", "normal");
-                doc.text("27.40", 50, 70);
+                doc.text(totalWeight, 50, 70);
 
 
                 doc.setFontSize(8);
@@ -350,7 +350,7 @@ export default {
                 doc.setFont("helvetica", "bold");
                 doc.text("Total Packages", 130,65);
                 doc.setFont("helvetica", "normal");
-                doc.text("2", 130, 70);
+                doc.text(totalPackages, 130, 70);
 
 
                 /**************************** */
@@ -500,6 +500,14 @@ export default {
 
 
 
+                function thousands_separators(num)
+                {
+                    var num_parts = num.toString().split(".");
+                    num_parts[0] = num_parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+                    return num_parts.join(",");
+                }
+
+
 
 
                 let info = [] 
@@ -517,7 +525,7 @@ export default {
                             'EA', 
                             element_2.quanty,
                             element_2.unit_value,
-                            element_2.total_value,
+                            thousands_separators(element_2.total_value),
                             ]
                             )
 
@@ -533,7 +541,10 @@ export default {
                             '',
                             element_1.total_value / element_1.group[0].unit_value,
                             '-',
-                            parseFloat(element_1.total_value).toFixed(2),
+                            thousands_separators(element_1.total_value),
+                            
+
+
                             ,
                             
                             ]
@@ -704,7 +715,7 @@ export default {
                     '',
                     '',              
                     'Total Commodity Value:',         
-                    (this.$store.state.totalCommodityValue.total_value).toFixed(2),
+                    thousands_separators(this.$store.state.totalCommodityValue.total_value),
                     ],                   
                     [
                     'Comments:',
@@ -734,7 +745,7 @@ export default {
                     '',
                     '',              
                     'Total Invoice Value:',         
-                    (this.$store.state.totalCommodityValue.total_value).toFixed(2),
+                    thousands_separators(this.$store.state.totalCommodityValue.total_value),
                     ],
                     [
                     'I DECLARE ALL INFORMATION CONTAINED IN THIS REPORT TO BE TRUE AND CORRECT',
