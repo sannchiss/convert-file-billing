@@ -289,7 +289,7 @@ export default {
                 doc.text("Intl Air Waybill", 40,22 );
                 doc.setFont("helvetica", "normal");
                 doc.text(intlAirWaybill, 40,27 );
-                doc.addImage("https://www.webarcode.com/barcode/image.php?code=ACI-"+ intlAirWaybill +"&type=C128B&xres=1&height=100&width=258&font=2&output=png&style=196", "JPEG", 100, 18, 85, 22);
+                doc.addImage("https://www.webarcode.com/barcode/image.php?code=ACI-"+ intlAirWaybill +"&type=C128B&xres=1&height=100&width=258&font=2&output=png&style=196", "JPEG", 100, 18, 85, 24);
 
                 doc.setFontSize(8);
                 doc.setFont("helvetica", "bold");
@@ -306,14 +306,14 @@ export default {
                 doc.setFont("helvetica", "bold");
                 doc.text("Bill Trans. Charges", 10,52);
                 doc.setFont("helvetica", "normal");
-                doc.text("4212445545", 10,58 );
+                doc.text("432237605", 10,58 );
 
 
                 doc.setFontSize(8);
                 doc.setFont("helvetica", "bold");
                 doc.text("Bill D/T/F", 50,52);
                 doc.setFont("helvetica", "normal");
-                doc.text("431591944", 50,58 );
+                doc.text("432237605", 50,58 );
 
 
                 doc.setFontSize(8);
@@ -363,31 +363,31 @@ export default {
             
                 doc.setFontSize(8);
                 doc.setFont("helvetica", "bold");
-                doc.text("Contact:   CUSTOMER SERVICE", 10, 82);
+                doc.text("Contact:   Luis Kellemen", 10, 82);
 
                 doc.setFontSize(8);
                 doc.setFont("helvetica", "bold");
-                doc.text("Co Name: STEMS AND BUNCHES", 10, 87);
+                doc.text("Co Name: KALOS S.A", 10, 87);
 
                 doc.setFontSize(8);
                 doc.setFont("helvetica", "bold");
-                doc.text("Address1: KALOS LEATHER COMPANY", 10, 92);
+                doc.text("Address1: Bernardino Caballero S/N", 10, 92);
 
                 doc.setFontSize(8);
                 doc.setFont("helvetica", "bold");
-                doc.text("Address2: -", 10, 97);
+                doc.text("Address2: Mariano Roque Alonso", 10, 97);
 
                 doc.setFontSize(8);
                 doc.setFont("helvetica", "bold");
-                doc.text("City: -", 10, 102);
+                doc.text("City: ASUNCIÓN", 10, 102);
 
                 doc.setFontSize(8);
                 doc.setFont("helvetica", "bold");
-                doc.text("St/PV: -                        Country/Territory: PY        Postal:12345", 10, 107);
+                doc.text("St/PV: -                        Country/Territory: PY        Postal:-", 10, 107);
 
                 doc.setFontSize(8);
                 doc.setFont("helvetica", "bold");
-                doc.text("Phone:      57 3156944600            Tax ID:", 10, 112);
+                doc.text("Phone:      595 217 51596            Tax ID: 80078648-3", 10, 112);
 
                 /**************************** */
 
@@ -473,19 +473,19 @@ export default {
                 
                 doc.setFontSize(8);
                 doc.setFont("helvetica", "bold");
-                doc.text("Contact:   VIA IPD SERVICE", 110, 124);
+                doc.text("Contact:   Luis Kellemen", 110, 124);
 
                 doc.setFontSize(8);
                 doc.setFont("helvetica", "bold");
-                doc.text("Co Name: FEDEX EXPRESS", 110, 129);
+                doc.text("Co Name: ZEN DICTRIBUTORS GROUP II LLC", 110, 129);
 
                 doc.setFontSize(8);
                 doc.setFont("helvetica", "bold");
-                doc.text("Address1: 6100 NW 36 Street", 110, 134);
+                doc.text("Address1: 2047 NW 24TH Ave", 110, 134);
 
                 doc.setFontSize(8);
                 doc.setFont("helvetica", "bold");
-                doc.text("Address2: Building 831", 110, 139);
+                doc.text("Address2: -", 110, 139);
 
                 doc.setFontSize(8);
                 doc.setFont("helvetica", "bold");
@@ -493,11 +493,11 @@ export default {
 
                 doc.setFontSize(8);
                 doc.setFont("helvetica", "bold");
-                doc.text("St/PV:         FL                Country/Territory: US        Postal:33115", 110, 149);
+                doc.text("St/PV:         FL                Country/Territory: US        Postal:33142", 110, 149);
 
                 doc.setFontSize(8);
                 doc.setFont("helvetica", "bold");
-                doc.text("Phone:       7862656564      Tax ID:-", 110, 154);
+                doc.text("Phone:       305 905 8105      Tax ID: 26-04-20325", 110, 154);
 
 
 
