@@ -72,7 +72,6 @@ export default new Vuex.Store({
                 return item.split('\t'||' ' )
               })
 
-             // console.log("El archivo es: ",data)
 
 
               var obj = {
@@ -157,9 +156,6 @@ export default new Vuex.Store({
 
 
 
-
-         // console.log("El resultado es dataFile: ",dataFile)
-
           /*********************************************************** */
           /**
            * 
@@ -177,37 +173,10 @@ export default new Vuex.Store({
             }, 0)   
 
 
-           /*  state.definitiveData.push(r[a.part_number].total_value = r[a.part_number].reduce((a, b) => {
-              return parseInt(a) + parseInt(b.total_value)
-            }, 0)) */
-
-
             return r;
           }, {});
 
-       /*    db.collection('groupPartNumber').add(
-            state.groupPartNumber
-          ) */
-
-          try {
-           /*  let groupPartNumber =  db.collection('groupPartNumber')
-            groupPartNumber.get().then((querySnapshot) => {
-              querySnapshot.forEach((doc) => {
-                console.log("El resultado es: ",doc.data())
-              })
-            }) */
-    
-
-            /* db.collection('groupPartNumber').get().then(groupPartNumber => {
-              console.log(groupPartNumber[0])
-            })
-        */
-            
-    
-          }
-          catch (error) {
-            console.log('error: ', error)
-          }
+          /*********************************************************** */
 
 
          console.log("El resultado es groupPartNumber: ",state.groupPartNumber)
@@ -237,18 +206,10 @@ export default new Vuex.Store({
             }
           })
 
-         console.log("El resultado es totalCommodityValue: ",state.totalCommodityValue)
 
-         // console.log("El resultado es groupPartNumber: ", state.groupPartNumber)
           
           // recorrer el objeto groupPartNumber
           for (const [key, value_1] of Object.entries(state.groupPartNumber)) {
-            //console.log(`${key}: ${value_1.total_value}`);
-
-            /* console.log("El resultado es value_1: ", value_1)
-      
-            console.log("El resultado es value_1: ", value_1.total_value) */
-
 
             state.definitiveData.push({
               group: value_1,
@@ -256,17 +217,6 @@ export default new Vuex.Store({
             })
 
 
-
-
-           // for in value
-            for (const [key, value] of Object.entries(value_1)) {
-              //console.log(`${key}: ${value}`);
-
-              //console.log("El resultado es value: ", value)
-
-                   // console.log("El resultado es value: ", value[1])
-           
-            }
 
           }
 

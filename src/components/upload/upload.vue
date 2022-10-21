@@ -218,8 +218,6 @@ export default {
 
         intlAirWaybillRules: [
             v => !!v || 'Intl Air Waybill is required',
-            //limit to 11 characters
-            v => v.length <= 12 || 'Intl Air Waybill must be less than 12 characters',
         ],
 
         invoiceNumberRules: [
@@ -251,9 +249,9 @@ export default {
             var totalPackages = this.totalPackages;
 
 
-
         if(this.$refs.formReport.validate()){
-                
+
+            this.$refs.formReport.reset();
 
                 // get date formnate yyyy-mm-dd
                 var today = new Date();
@@ -544,10 +542,6 @@ export default {
                             '-',
                             thousands_separators(element_1.total_value),
                             
-
-
-                            ,
-                            
                             ]
                             )
 
@@ -836,9 +830,6 @@ export default {
                         cellWidth: 'auto',
                         // aumentar altura
 
-
-                    
-
                     },
 
                 }
@@ -860,13 +851,11 @@ export default {
                 }
 
 
-
-
-
                 // view in browser
                 doc.output("dataurlnewwindow");
 
-
+                // reload page
+                this.$router.go(0);
 
 
             }
