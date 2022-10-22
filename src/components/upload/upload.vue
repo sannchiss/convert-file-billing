@@ -32,7 +32,20 @@
 
                         <v-col cols="5">
 
-                            <v-file-input 
+                            <!--file only extension txt-->
+                            <v-file-input
+                                v-model="$store.state.file"
+                                :rules="fileRules"
+                                label="File (.txt)"
+                                prepend-icon="mdi-paperclip"
+                                @change="onFileChange"
+                                accept=".txt"
+                                outlined
+                                dense
+                                required
+                            ></v-file-input>
+
+                         <!--    <v-file-input 
                             v-model="$store.state.file" 
                             prepend-icon="mdi-paperclip"
                             :rules="fileRules"
@@ -40,7 +53,7 @@
                             label="File .txt" 
                             show-size @change="onFileChange"
                             >
-                            </v-file-input>
+                            </v-file-input> -->
 
                         </v-col>
 
@@ -110,9 +123,9 @@
                                     md="4"
                                 >
                                     <v-text-field
-                                    label="Invoice Number"
+                                    label="Invoice Number (optional)"
                                     v-model="invoiceNumber"
-                                    :rules="invoiceNumberRules"
+                                    type="number"
                                     ></v-text-field>
                                 </v-col>
 
@@ -124,8 +137,9 @@
                                     <v-text-field
                                     label="Intl Air Waybill"
                                     v-model="intlAirWaybill"
-                                    :maxlength="12"
+                                    maxlength="12"
                                     :rules="intlAirWaybillRules"
+                                    type="number"
                                     ></v-text-field>
                                 </v-col>
                                                               
@@ -138,6 +152,7 @@
                                         <v-text-field
                                         label="Total Weight (KGS)"
                                         v-model="totalWeight"
+                                        type="number"
                                         :rules="totalWeightRules"
                                         required
                                         ></v-text-field>
@@ -218,10 +233,9 @@ export default {
 
         intlAirWaybillRules: [
             v => !!v || 'Intl Air Waybill is required',
-        ],
-
-        invoiceNumberRules: [
-            v => !!v || 'Invoice Number is required',
+            // required 12 characters
+            v => v.length <= 12 || 'Intl Air Waybill must be less than 12 characters',
+            v => v.length >= 12 || 'Intl Air Waybill must be 12 characters',
         ],
 
         totalWeightRules: [
@@ -233,6 +247,8 @@ export default {
 
     }),
     methods: {
+
+        
        
         onFileChange(file) {
             this.$store.commit('setFile', file)
