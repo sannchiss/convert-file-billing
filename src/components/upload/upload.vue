@@ -35,24 +35,18 @@
                             <!--file only extension txt-->
                             <v-file-input
                                 v-model="$store.state.file"
-                                :rules="fileRules"
+                                :rules= "[v => !!v || 'File is required', 
+                                v => (v && v.type === 'text/plain') || 'File must be a txt']"
+                                ref="fileInput"
+                                accept=".txt"                                
                                 label="File (.txt)"
                                 prepend-icon="mdi-paperclip"
                                 @change="onFileChange"
-                                outlined
+                                show-size
+                                type="file"
                                 dense
                                 required
                             ></v-file-input>
-
-                         <!--    <v-file-input 
-                            v-model="$store.state.file" 
-                            prepend-icon="mdi-paperclip"
-                            :rules="fileRules"
-                            accept="txt/*" 
-                            label="File .txt" 
-                            show-size @change="onFileChange"
-                            >
-                            </v-file-input> -->
 
                         </v-col>
 
@@ -139,6 +133,7 @@
                                     maxlength="12"
                                     :rules="intlAirWaybillRules"
                                     type="number"
+                                    counter="12"
                                     ></v-text-field>
                                 </v-col>
                                                               
@@ -170,16 +165,10 @@
                             </v-container>
                             <small>*indicates required field</small>
                             </v-card-text>
-
-                    </v-row>
-
-                </v-card-text>
-
-                <v-row>
-
-                    <v-col align="center">
-
-                        <v-btn 
+                          <!--   
+                            <v-card-actions>
+                            <v-spacer></v-spacer>                           
+                            <v-btn 
                             :loading="$store.state.loading" 
                             color="blue-grey" 
                             class="ma-2 white--text" 
@@ -189,10 +178,35 @@
                                     mdi-file-pdf-box
                                 </v-icon>
                             </v-btn>
+                            </v-card-actions> -->
 
-                    </v-col>
+                    </v-row>
 
-                </v-row>
+                </v-card-text>
+
+                <v-card-actions>
+
+                    <v-row>
+    
+                        <v-col align="center">
+    
+                            <v-btn 
+                                :loading="$store.state.loading" 
+                                color="blue-grey" 
+                                class="ma-2 white--text" 
+                                v-on:click.prevent="generateReport">
+                                    Generate PDF
+                                    <v-icon right dark>
+                                        mdi-file-pdf-box
+                                    </v-icon>
+                                </v-btn>
+    
+                        </v-col>
+    
+                    </v-row>
+
+                </v-card-actions>
+
 
                 </v-form>
 
@@ -211,6 +225,7 @@
 
 import { jsPDF } from "jspdf";
 import autoTable from 'jspdf-autotable';
+import { ref } from 'vue';
 
 export default {
 
@@ -224,10 +239,6 @@ export default {
         totalWeight: '',
         totalPackages: '',
 
-        fileRules: [
-            v => !!v || 'File is required',
-            v => v.name.endsWith('.txt') || 'File must be .txt',
-        ],
 
         dateRules: [
             v => !!v || 'Date is required',
@@ -249,11 +260,11 @@ export default {
 
     }),
     methods: {
-
-        
        
         onFileChange(file) {
+
             this.$store.commit('setFile', file)
+
         },
 
         generateReport() {
@@ -893,6 +904,7 @@ export default {
 
     },
     components: {
+
         contentToPrint: require('@/components/upload/contentToPrint.vue').default,
 
     },
