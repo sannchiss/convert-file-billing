@@ -3,14 +3,11 @@
 
     <v-row>
 
-
         <v-col md="12" pt-15>
 
             <table id="my-table"><!-- ... --></table>
 
         </v-col>
-
-
 
     </v-row>
 
@@ -171,9 +168,17 @@
                             </v-container>
                             <small>*indicates required field</small>
                             </v-card-text>
-                            <v-card-actions>
-                            <v-spacer></v-spacer>                           
-                            <v-btn 
+                       
+
+                    </v-row>
+
+                </v-card-text>
+
+                <v-row>
+
+                    <v-col align="center">
+
+                        <v-btn 
                             :loading="$store.state.loading" 
                             color="blue-grey" 
                             class="ma-2 white--text" 
@@ -183,15 +188,13 @@
                                     mdi-file-pdf-box
                                 </v-icon>
                             </v-btn>
-                            </v-card-actions>
 
-                    </v-row>
+                    </v-col>
 
-                </v-card-text>
+                </v-row>
+            
 
-                <v-card-text>
-
-                </v-card-text>
+                
 
                 </v-form>
 
