@@ -3,11 +3,14 @@
 
     <v-row>
 
+
         <v-col md="12" pt-15>
 
             <table id="my-table"><!-- ... --></table>
 
         </v-col>
+
+
 
     </v-row>
 
@@ -36,7 +39,6 @@
                                 label="File (.txt)"
                                 prepend-icon="mdi-paperclip"
                                 @change="onFileChange"
-                                accept=".txt"
                                 outlined
                                 dense
                                 required
@@ -168,7 +170,6 @@
                             </v-container>
                             <small>*indicates required field</small>
                             </v-card-text>
-                       
 
                     </v-row>
 
@@ -192,9 +193,6 @@
                     </v-col>
 
                 </v-row>
-            
-
-                
 
                 </v-form>
 
@@ -228,7 +226,6 @@ export default {
 
         fileRules: [
             v => !!v || 'File is required',
-            // add message for file extension
             v => v.name.endsWith('.txt') || 'File must be .txt',
         ],
 
