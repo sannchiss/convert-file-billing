@@ -225,6 +225,8 @@ export default {
 
         fileRules: [
             v => !!v || 'File is required',
+            // add message for file extension
+            v => v.name.endsWith('.txt') || 'File must be .txt',
         ],
 
         dateRules: [
